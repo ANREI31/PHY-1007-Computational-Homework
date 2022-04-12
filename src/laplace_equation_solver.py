@@ -1,6 +1,7 @@
 import numpy as np
 from copy import deepcopy
 import random
+import time
 
 
 from src.fields import ScalarField
@@ -42,27 +43,25 @@ class LaplaceEquationSolver:
             is not a point belonging to an electric wire.
         """
 
+        ### Cette implémentation ne passe pas les tests, mais elle semble être la bonne. ####
+
         n, m = constant_voltage.shape
         potential = deepcopy(constant_voltage)
 
-        xs = list(range(n-1))
-        random.shuffle(xs)
-        ys = list(range(m-1))
-        random.shuffle(ys)
-
         for _ in range(self.nb_iterations):
-            for i in range(n-1):
-                for j in range(m-1):
-                    if constant_voltage[i][j]:
+            next_potential = deepcopy(potential)
+            for i in range(1, n-1):
+                for j in range(1, m-1):
+                    if constant_voltage[i, j]:
                         continue
-                    potential[i][j] = sum([
-                        potential[i+1][j],
-                        potential[i-1][j],
-                        potential[i][j+1],
-                        potential[i][j-1]
+                    next_potential[i, j] = sum([
+                        potential[i+1, j],
+                        potential[i-1, j],
+                        potential[i, j+1],
+                        potential[i, j-1]
                     ])/4
+            potential = next_potential
 
-        print(potential[25][25])
         return potential
 
 
