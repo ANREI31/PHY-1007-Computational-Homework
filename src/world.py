@@ -134,6 +134,8 @@ class World:
         else:
             self._potential = LaplaceEquationSolver().solve(self._wires_voltage)
             self._electric_field = -np.stack(np.gradient(self._potential), axis=2)
+            self._magnetic_field = BiotSavartEquationSolver().solve(self._wires_current)
+            self._energy_flux = np.cross(self._electric_field, self._magnetic_field)/(4*np.pi*10**-7)
 
     def show_wires_voltage(self):
         """
