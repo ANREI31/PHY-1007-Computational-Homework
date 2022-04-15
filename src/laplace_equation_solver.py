@@ -49,19 +49,18 @@ class LaplaceEquationSolver:
         potential = deepcopy(constant_voltage)
 
         for _ in range(self.nb_iterations):
-            next_potential = deepcopy(potential)
-            for i in range(1, n-1):
-                for j in range(1, m-1):
-                    if constant_voltage[i, j]:
-                        continue
-                    next_potential[i, j] = sum([
-                        potential[i+1, j],
-                        potential[i-1, j],
-                        potential[i, j+1],
-                        potential[i, j-1]
-                    ])/4
-            potential = next_potential
+            next_potential_ = np.zeros((n, m))
 
-        return potential
+            next_potential_[1:, :] += potential[:-1, :]
+            next_potential_[:-1, :] += potential[1:, :]
+            next_potential_[:, 1:] += potential[:, :-1]
+            next_potential_[:, :-1] += potential[:, 1:]
+            next_potential_ /= 4
+
+            next_potential_ = np.where(constant_voltage == 0, next_potential_, constant_voltage)
+
+            potential[1:-1, 1:-1] = next_potential_[1:-1, 1:-1]
+
+        return ScalarField(potential)
 
 
