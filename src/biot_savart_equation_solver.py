@@ -3,6 +3,7 @@ from scipy.constants import mu_0, pi
 
 from src.fields import VectorField
 
+import time
 import warnings
 
 
@@ -36,19 +37,17 @@ class BiotSavartEquationSolver:
 
         magnetic_field = np.zeros(electric_current.shape)
 
-        indices_i, indices_j = np.indices((n, m))
+        indices_ii, indices_jj, indices_k, indices_l = np.indices((n, m, n, m))
 
-        for i in range(n):
-            for j in range(m):
-                r = np.stack([-indices_i+i, -indices_j+j, np.zeros((n, m))], axis=2)
-                rnorm = np.sqrt(np.sum(np.square(r), axis=2))
+        r = np.stack([-indices_k+indices_ii, -indices_l+indices_jj, np.zeros((n, m, n, m))], axis=4)
+        rnorm = np.sqrt(np.sum(np.square(r), axis=4))
 
-                with warnings.catch_warnings(): # Pour pas que Numpy nous fasse chier avec ses RuntimeWarning
-                    warnings.simplefilter("ignore")
-                    rhat = r/rnorm[:, :, None]
-                    bmatrix = np.cross(electric_current, rhat, axis=2)/np.square(rnorm)[:, :, None]
+        with warnings.catch_warnings(): # Pour pas que Numpy nous fasse chier avec ses RuntimeWarning
+            warnings.simplefilter("ignore")
+            rhat = r/rnorm[:, :, :, :, None]
+            bmatrix = np.cross(electric_current[None, None, :, :], rhat, axis=4)/np.square(rnorm)[:, :, :, :, None]
 
-                bmatrix[np.isnan(bmatrix)] = 0
-                magnetic_field[i, j] = np.sum(bmatrix)*u0
+        bmatrix[np.isnan(bmatrix)] = 0
+        magnetic_field = np.sum(bmatrix, axis=(2, 3))*u0
 
         return VectorField(magnetic_field)
