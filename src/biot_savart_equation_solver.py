@@ -3,6 +3,7 @@ from scipy.constants import mu_0, pi
 
 from src.fields import VectorField
 
+import time
 import warnings
 
 
@@ -40,6 +41,9 @@ class BiotSavartEquationSolver:
 
         for i in range(n):
             for j in range(m):
+                if electric_current[i, j].any(): # On dit qu'il n'y pas de champ magnétique dans les fils
+                    continue
+
                 r = np.stack([-indices_i+i, -indices_j+j, np.zeros((n, m))], axis=2)
                 rnorm = np.sqrt(np.sum(np.square(r), axis=2))
 
@@ -49,6 +53,6 @@ class BiotSavartEquationSolver:
                     bmatrix = np.cross(electric_current, rhat, axis=2)/np.square(rnorm)[:, :, None]
 
                 bmatrix[np.isnan(bmatrix)] = 0
-                magnetic_field[i, j] = np.sum(bmatrix)*u0
+                magnetic_field[i, j] = np.sum(bmatrix, axis=(0, 1))*u0
 
         return VectorField(magnetic_field)
