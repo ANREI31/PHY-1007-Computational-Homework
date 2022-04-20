@@ -133,9 +133,9 @@ class World:
             raise ValueError("Place at least one wire before computing the circuits' fields.")
         else:
             self._potential = LaplaceEquationSolver().solve(self._wires_voltage)
-            self._electric_field = -np.stack(np.gradient(self._potential), axis=2)
+            self._electric_field = -VectorField(np.stack(np.gradient(self._potential), axis=2))
             self._magnetic_field = BiotSavartEquationSolver().solve(self._wires_current)
-            self._energy_flux = np.cross(self._electric_field, self._magnetic_field)/(4*np.pi*10**-7)
+            self._energy_flux = VectorField(np.cross(self._electric_field, self._magnetic_field)/(4*np.pi*10**-7))
 
     def show_wires_voltage(self):
         """
