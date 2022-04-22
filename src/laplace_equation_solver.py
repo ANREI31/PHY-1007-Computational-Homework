@@ -13,7 +13,7 @@ class LaplaceEquationSolver:
     voltage field V (for example due to wires).
     """
 
-    def __init__(self, nb_iterations: int = 1000):
+    def __init__(self, nb_iterations: int = 10000):
         """
         Laplace solver constructor. Used to define the number of iterations for the relaxation method.
 
@@ -44,6 +44,7 @@ class LaplaceEquationSolver:
         """
 
         ### Cette implémentation ne passe pas les tests, mais elle semble être la bonne. ####
+        # Elle passe les tests si on augmente le nombre d'itérations à 10 000 #
 
         n, m = constant_voltage.shape
         potential = deepcopy(constant_voltage)
@@ -59,7 +60,7 @@ class LaplaceEquationSolver:
 
             next_potential_ = np.where(constant_voltage == 0, next_potential_, constant_voltage)
 
-            potential[1:-1, 1:-1] = next_potential_[1:-1, 1:-1]
+            potential = next_potential_
 
         return ScalarField(potential)
 
