@@ -117,7 +117,7 @@ class World:
         elif isinstance(an_object, Circuit):
             self._place_circuit(an_object)
 
-    def compute(self, nb_relaxation_iterations: int = 1000):
+    def compute(self, nb_relaxation_iterations: int = 10000):
         """
         Calculates all the fields present in the world using the voltage and current fields produced by the wires in the
         circuits. The known fields are the voltage (self._wires_voltage) and current (self._wires_current) fields. The
@@ -132,30 +132,30 @@ class World:
         if not self.wires:
             raise ValueError("Place at least one wire before computing the circuits' fields.")
         else:
-            self._potential = LaplaceEquationSolver().solve(self._wires_voltage)
+            self._potential = LaplaceEquationSolver(nb_iterations=nb_relaxation_iterations).solve(self._wires_voltage)
             self._electric_field = -VectorField(np.stack(np.gradient(self._potential), axis=2))
             self._magnetic_field = BiotSavartEquationSolver().solve(self._wires_current)
             self._energy_flux = VectorField(np.cross(self._electric_field, self._magnetic_field)/(4*np.pi*10**-7))
 
-    def show_wires_voltage(self):
+    def show_wires_voltage(self, **kwargs):
         """
         Shows wires' voltage field.
         """
         if self.wires:
-            self._wires_voltage.show(title="Initial voltage")
+            self._wires_voltage.show(title="Initial voltage", **kwargs)
         else:
             raise self.EmptyWorldException
 
-    def show_potential(self):
+    def show_potential(self, **kwargs):
         """
         Shows the electric potential.
         """
         if self.wires:
-            self._potential.show(title="Potential")
+            self._potential.show(title="Potential", **kwargs)
         else:
             raise self.EmptyWorldException
 
-    def show_electric_field(self, hide_wires: bool = True):
+    def show_electric_field(self, hide_wires: bool = True, **kwargs):
         """
         Shows the electric field.
 
@@ -173,25 +173,25 @@ class World:
             else:
                 electric_field = self._electric_field
 
-            electric_field.show(title="Electric field")
+            electric_field.show(title="Electric field", **kwargs)
         else:
             raise self.EmptyWorldException
 
-    def show_magnetic_field(self):
+    def show_magnetic_field(self, **kwargs):
         """
         Shows the z-component of the magnetic field.
         """
         if self.wires:
-            self._magnetic_field.z.show(title="Magnetic field (z component)")
+            self._magnetic_field.z.show(title="Magnetic field (z component)", **kwargs)
         else:
             raise self.EmptyWorldException
 
-    def show_energy_flux(self):
+    def show_energy_flux(self, **kwargs):
         """
         Shows the energy flux.
         """
         if self.wires:
-            self._energy_flux.show(title="Energy flux")
+            self._energy_flux.show(title="Energy flux", **kwargs)
         else:
             raise self.EmptyWorldException
 

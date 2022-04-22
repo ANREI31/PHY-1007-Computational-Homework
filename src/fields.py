@@ -101,6 +101,8 @@ class ScalarField(np.ndarray):
         ax.set_xlabel(xlabel=kwargs.get("x_label", "x"))
         ax.set_ylabel(ylabel=kwargs.get("y_label", "y"))
         ax.set_title(label=kwargs.get("title", ""))
+        if kwargs.get('clim'):
+            image.set_clim(*kwargs.get('clim'))
         fig.colorbar(image, orientation='vertical')
         plt.show()
 
@@ -281,5 +283,10 @@ class VectorField(np.ndarray):
         ax.set_xlabel(xlabel=kwargs.get("x_label", "x"))
         ax.set_ylabel(ylabel=kwargs.get("y_label", "y"))
         ax.set_title(label=kwargs.get("title", ""))
-        fig.colorbar(self.__stream_plot_color_bar().lines, orientation='vertical')
+
+        lines = self.__stream_plot_color_bar().lines
+        if kwargs.get('clim'):
+            lines.set_clim(*kwargs.get('clim'))
+
+        fig.colorbar(lines, orientation='vertical')
         plt.show()
