@@ -4,8 +4,6 @@ from src import Circuit, Current, Wire, World
 
 
 if __name__ == "__main__":
-    world = World(shape=(81, 81))
-
     world = World(shape=(73, 73))
 
     wires = [
