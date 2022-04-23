@@ -52,7 +52,7 @@ if __name__ == "__main__":
         Wire(start=(41, 46), stop=(41, 41), current=Current(x=0, y=-1), voltage=4.5),
         Wire(start=(41, 41), stop=(46, 41), current=Current(x=1, y=0), voltage=4.5),
         #Fin milieu
-        Wire(start=(46, 41), stop=(46, 31), current=Current(x=0, y=-1), voltage=4.5),
+        Wire(start=(46, 41), stop=(46, 31), current=Current(x=0, y=-1), voltage=1),
         #Début feuille
         Wire(start=(46, 31), stop=(36, 31), current=Current(x=-1, y=0), voltage=1),
         Wire(start=(36, 31), stop=(36, 36), current=Current(x=0, y=1), voltage=1),
