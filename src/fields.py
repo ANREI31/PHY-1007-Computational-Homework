@@ -104,6 +104,11 @@ class ScalarField(np.ndarray):
         if kwargs.get('clim'):
             image.set_clim(*kwargs.get('clim'))
         fig.colorbar(image, orientation='vertical')
+
+        if kwargs.get('filename'):
+            plt.savefig(kwargs.get('filename'))
+            return
+
         plt.show()
 
 
@@ -289,4 +294,9 @@ class VectorField(np.ndarray):
             lines.set_clim(*kwargs.get('clim'))
 
         fig.colorbar(lines, orientation='vertical')
+
+        if kwargs.get('filename'):
+            plt.savefig(kwargs.get('filename'))
+            return
+
         plt.show()
