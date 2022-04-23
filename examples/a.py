@@ -25,5 +25,5 @@ if __name__ == "__main__":
     world.show_wires_voltage( x_label="x [m]", y_label="y [m]", title="Initial Voltage [V]")
     world.show_potential(     x_label="x [m]", y_label="y [m]", title="Potential [V]")
     world.show_electric_field(x_label="x [m]", y_label="y [m]", title="Electrical field [N/C]")
-    world.show_magnetic_field(x_label="x [m]", y_label="y [m]", title="Magnetic field [T]")
+    world.show_magnetic_field(x_label="x [m]", y_label="y [m]", title="Magnetic field (z component) [T]")
     world.show_energy_flux(   x_label="x [m]", y_label="y [m]", title="Energy flux [W/m^2]")
