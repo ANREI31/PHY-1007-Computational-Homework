@@ -82,6 +82,7 @@ if __name__ == "__main__":
     world.show_magnetic_field(x_label="x [m]", y_label="y [m]", title="Magnetic field (z component) [T]", filename='remise/d_magnetic.png')
     world.show_energy_flux(   x_label="x [m]", y_label="y [m]", title="Energy flux [W/m^2]",              filename='remise/d_energy.png')
 
+# Le code ci-dessous permet d'animer un circuit RL qui oscille, mais il nécessite une version patchée de matplotlib: https://github.com/matplotlib/matplotlib/issues/19323
 """
 import numpy as np
 import matplotlib.pyplot as plt
